@@ -22,6 +22,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     });
 
+
+    //Casper entered this
     Parse.initialize("qFjmgqSPB4G94fwh8NmRNpfNXuFr0VqTbkSIgcea", "WdD4dthiY4BW7Qcdq0Ydwlx7EMmJ7TN6BzuHq3ND");
 
   })

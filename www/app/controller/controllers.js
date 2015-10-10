@@ -4,15 +4,15 @@ angular.module('starter.controllers', [])
 
     $scope.data = {};
 
-    $scope.loginEmail = function(){
+    $scope.loginEmail = function () {
       Parse.User.logIn($scope.data.username, $scope.data.password, {
-        success: function(user) {
+        success: function (user) {
           // Do stuff after successful login.
-            $state.go('tab.dash');
+          $state.go('tab.dash');
           console.log(user);
           //alert("success!");
         },
-        error: function(user, error) {
+        error: function (user, error) {
           // The login failed. Check error to see why.
           alert("error!");
         }
@@ -22,26 +22,35 @@ angular.module('starter.controllers', [])
 
   .controller('DashCtrl', function ($scope, Model) {
 
-    Model.getCourses().then(function(courses){
+    Model.getCourses().then(function (courses) {
 
       return courses.findUpcomingLectures();
 
-    }, function(error){
+    }, function (error) {
       console.log(error);
-    }).then(function(lectures){
+    }).then(function (lectures) {
 
       return lectures.getLectureContent();
 
-    }, function(err){
+    }, function (err) {
       console.log(err);
-    }).then(function(readings){
+    }).then(function (readings) {
 
-      return readings.hasArticlesBeenRead()
+      readings.hasArticlesBeenRead()
+        .then(function (articles) {
+          console.log(articles);
+        });
+
+      readings.hasChaptersBeenRead()
+        .then(function (chapters) {
+          console.log(chapters);
+        });
 
     }, function (err) {
       console.log(err);
     }).then(function (foo) {
-      console.log(foo);
+
+
     }, function (err) {
       console.log(err);
     });

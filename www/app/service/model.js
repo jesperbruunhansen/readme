@@ -125,7 +125,7 @@ model.factory("Model", function () {
           .query()
           .include("chapter")
           .each(function (chapter) {
-            chapterList.push(chapter.get("article"));
+            chapterList.push(chapter.get("chapter"));
           });
       });
 
@@ -137,7 +137,7 @@ model.factory("Model", function () {
           hasArticlesBeenRead: function () {
             return that.hasArticleBeenRead(articleList);
           },
-          hasChaptersBeenread: function () {
+          hasChaptersBeenRead: function () {
             return that.hasChapterBeenRead(chapterList);
           }
         });
@@ -151,20 +151,110 @@ model.factory("Model", function () {
     },
     hasArticleBeenRead: function (articles) {
 
-      console.log(articles);
-
+      var promise = new Parse.Promise();
       var query = new Parse.Query("RegsArticle");
       query.equalTo("user", this.user);
       query.containedIn("article", articles);
-      query.find().then(function (article) {
-        console.log(article);
+      query.find().then(function (regsArticles) {
+
+        var articleList = [];
+
+        /*
+         * Find the chapter registration
+         */
+        regsArticles.forEach(function (regsArticle) {
+          articles.forEach(function (article) {
+            if (article.id === regsArticle.get("article").id) {
+              articleList.push({
+                chapter: article,
+                id: article.id,
+                isRead: article.get("endPage") === regsArticle.get("to")
+              });
+
+              /*
+               * When the article has been found, remove it from the array
+               */
+              articles.splice(articles.indexOf(article), 1);
+            }
+          });
+        });
+
+        /*
+         * Take remaining articles and pass to the list
+         *
+         * We assume, that if no registrations has been made,
+         * the article has not been read.
+         */
+        articles.forEach(function (article) {
+          articleList.push({
+            chapter: article,
+            id: article.id,
+            isRead: false
+          });
+        });
+
+        promise.resolve(articleList);
+
       }, function (err) {
+        promise.reject(err);
         console.log(err)
       });
 
+      return promise;
 
     },
     hasChapterBeenRead: function (chapters) {
+
+      var promise = new Parse.Promise();
+      var query = new Parse.Query("RegsChapter");
+      query.equalTo("user", this.user);
+      query.containedIn("chapter", chapters);
+      query.find().then(function (regsChapters) {
+        var chapterList = [];
+
+        /*
+         * Find the chapter registration
+         */
+        regsChapters.forEach(function (regsChapter) {
+          chapters.forEach(function (chapter) {
+            if (chapter.id === regsChapter.get("chapter").id) {
+              chapterList.push({
+                chapter: chapter,
+                id: chapter.id,
+                isRead: chapter.get("endPage") === regsChapter.get("to")
+              });
+
+              /*
+               * When the chapter has been found, remove it from the array
+               */
+              chapters.splice(chapters.indexOf(chapter), 1);
+            }
+          });
+        });
+
+        /*
+         * Take remaining chapters and pass to the list
+         *
+         * We assume, that if no registrations has been made,
+         * the chapter has not been read.
+         */
+        chapters.forEach(function (chapter) {
+          chapterList.push({
+            chapter: chapter,
+            id: chapter.id,
+            isRead: false
+          });
+        });
+
+
+        promise.resolve(chapterList);
+
+      }, function (err) {
+        promise.reject(err);
+        console.log(err)
+      });
+
+      return promise;
 
     }
 

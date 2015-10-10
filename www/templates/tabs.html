@@ -6,19 +6,28 @@ navigation history that also transitions its views in and out.
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
 
   <!-- Dashboard Tab -->
-  <ion-tab title="Pensum" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong" href="#/tab/dash">
+  <ion-tab title="Studyplan" icon-off="ion-ios-book-outline" icon-on="ion-ios-book" href="#/tab/dash">
     <ion-nav-view name="tab-dash"></ion-nav-view>
   </ion-tab>
 
-  <!-- Chats Tab -->
-  <ion-tab title="Forecast" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#/tab/chats">
+  <!-- Statistics Tab -->
+  <ion-tab title="Statistics" icon-off="ion-ios-pie-outline" icon-on="ion-ios-pie" href="#/tab/chats">
     <ion-nav-view name="tab-chats"></ion-nav-view>
   </ion-tab>
 
-  <!-- Account Tab -->
-  <ion-tab title="Indstillinger" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/account">
-    <ion-nav-view name="tab-account"></ion-nav-view>
+  <!-- Forecast Tab -->
+  <ion-tab title="Forecast" icon-off="ion-ios-list-outline" icon-on="ion-ios-list" href="#/tab/forecast">
+    <ion-nav-view name="tab-forecast"></ion-nav-view>
   </ion-tab>
 
+  <!-- Calendar Tab -->
+  <ion-tab title="Calendar" icon-off="ion-ios-calendar-outline" icon-on="ion-ios-calendar" href="#/tab/calendar">
+    <ion-nav-view name="tab-calendar"></ion-nav-view>
+  </ion-tab>
+
+  <!-- Settings Tab -->
+  <ion-tab title="Settings" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/account">
+    <ion-nav-view name="tab-account"></ion-nav-view>
+  </ion-tab>
 
 </ion-tabs>

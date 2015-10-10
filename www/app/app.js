@@ -67,6 +67,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', "
         }
       })
 
+      .state('tab.forecast', {
+        url: '/forecast',
+        views: {
+          'tab-forecast': {
+            templateUrl: 'templates/tab-forecast.html',
+            controller: ''
+          }
+        }
+      })
+
+      .state('tab.calendar', {
+        url: '/calendar',
+        views: {
+          'tab-calendar': {
+            templateUrl: 'templates/tab-calendar.html',
+            controller: ''
+          }
+        }
+      })
+
       .state('tab.account', {
         url: '/account',
         views: {

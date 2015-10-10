@@ -6,7 +6,7 @@ var model = angular.module("starter.model", []);
 
 model.factory("Model", function () {
 
-  var user = Parse.User.current() || "test";
+  var user = Parse.User.current();
   if (!user)
     throw Error("No user logged in");
 
@@ -187,7 +187,7 @@ model.factory("Model", function () {
          */
         articles.forEach(function (article) {
           articleList.push({
-            chapter: article,
+            article: article,
             id: article.id,
             isRead: false
           });
@@ -249,6 +249,58 @@ model.factory("Model", function () {
 
         promise.resolve(chapterList);
 
+      }, function (err) {
+        promise.reject(err);
+        console.log(err)
+      });
+
+      return promise;
+
+    },
+    hasReadingBeenPlanned: function (articles, chapters){
+
+      var promise = new Parse.Promise();
+      var missingArticles = [];
+      var missingChapters = [];
+
+      /*
+      * Remove everything that has been read.
+      */
+      articles.forEach(function(article){
+        if(!article.isRead)
+          missingArticles.push(article.article);
+      });
+      chapters.forEach(function(chapter){
+        if(!chapter.isRead)
+          missingChapters.push(chapter.chapter);
+      });
+
+      /*
+       * Remove everything that has been read.
+       */
+      if(missingArticles.length == 0 && missingChapters.length == 0){
+        promise.resolve({
+          result: true
+        });
+        return promise;
+      }
+
+      /*
+      * Find all readings, which already has been planned
+      */
+      var articleQuery = new Parse.Query("Calendar");
+      articleQuery.containedIn("article", missingArticles);
+
+      var chapterQuery = new Parse.Query("Calendar");
+      chapterQuery.containedIn("chapter", missingChapters);
+
+      var query = new Parse.Query.or(articleQuery, chapterQuery);
+      query.equalTo("user", this.user);
+      query.find().then(function (plannedReadings) {
+
+
+
+        console.log(notPlannedList);
       }, function (err) {
         promise.reject(err);
         console.log(err)

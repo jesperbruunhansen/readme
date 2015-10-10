@@ -36,15 +36,16 @@ angular.module('starter.controllers', [])
       console.log(err);
     }).then(function (readings) {
 
-      readings.hasArticlesBeenRead()
-        .then(function (articles) {
-          console.log(articles);
+      var articles = readings.hasArticlesBeenRead();
+      var chapters = readings.hasChaptersBeenRead();
+
+      Parse.Promise.when(articles, chapters)
+        .then(function (articles, chapters) {
+
+          Model.hasReadingBeenPlanned(articles, chapters);
+
         });
 
-      readings.hasChaptersBeenRead()
-        .then(function (chapters) {
-          console.log(chapters);
-        });
 
     }, function (err) {
       console.log(err);

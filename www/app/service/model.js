@@ -257,37 +257,45 @@ model.factory("Model", function () {
       return promise;
 
     },
-    hasReadingBeenPlanned: function (articles, chapters){
+    hasReadingBeenPlanned: function (articles, chapters) {
 
       var promise = new Parse.Promise();
       var missingArticles = [];
       var missingChapters = [];
 
       /*
-      * Remove everything that has been read.
-      */
-      articles.forEach(function(article){
-        if(!article.isRead)
+       * Remove everything that has been read.
+       */
+      articles.forEach(function (article) {
+        if (!article.isRead)
           missingArticles.push(article.article);
       });
-      chapters.forEach(function(chapter){
-        if(!chapter.isRead)
+      chapters.forEach(function (chapter) {
+        if (!chapter.isRead)
           missingChapters.push(chapter.chapter);
       });
-
       /*
        * Remove everything that has been read.
        */
-      if(missingArticles.length == 0 && missingChapters.length == 0){
+      if (missingArticles.length == 0 && missingChapters.length == 0) {
         promise.resolve({
           result: true
         });
         return promise;
       }
 
+      console.log("--- LIST START ---");
+      missingArticles.forEach(function (ar) {
+        console.log("Article - " + ar.id);
+      });
+      missingChapters.forEach(function (ar) {
+        console.log("Chapter - " + ar.id);
+      })
+
+
       /*
-      * Find all readings, which already has been planned
-      */
+       * Find all readings, which already has been planned
+       */
       var articleQuery = new Parse.Query("Calendar");
       articleQuery.containedIn("article", missingArticles);
 
@@ -298,9 +306,30 @@ model.factory("Model", function () {
       query.equalTo("user", this.user);
       query.find().then(function (plannedReadings) {
 
+        var articles = [],
+          arrObj = {},
+          chapters = [],
+          chapObj = {};
+
+        _.each(plannedReadings, function (reading) {
+          if (reading.get("article")) {
+            articles.push(reading.get("article"));
+            arrObj[reading.get("article").id] = true
+          }
+          if (reading.get("chapter")) {
+            chapters.push(reading.get("chapter"));
+            chapObj[reading.get("chapter").id] = true;
+          }
+        });
+
+        var notPlannedArticles = _.reject(missingArticles, function (missingArticle) {
+          return arrObj[missingArticle.id];
+        });
+        var notPlannedChapters = _.reject(missingChapters, function (missingChapter) {
+          return chapObj[missingChapter.id];
+        });
 
 
-        console.log(notPlannedList);
       }, function (err) {
         promise.reject(err);
         console.log(err)

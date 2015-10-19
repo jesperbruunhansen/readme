@@ -274,6 +274,7 @@ model.factory("Model", function () {
         if (!chapter.isRead)
           missingChapters.push(chapter.chapter);
       });
+
       /*
        * Remove everything that has been read.
        */
@@ -283,14 +284,6 @@ model.factory("Model", function () {
         });
         return promise;
       }
-
-      console.log("--- LIST START ---");
-      missingArticles.forEach(function (ar) {
-        console.log("Article - " + ar.id);
-      });
-      missingChapters.forEach(function (ar) {
-        console.log("Chapter - " + ar.id);
-      })
 
 
       /*
@@ -311,6 +304,9 @@ model.factory("Model", function () {
           chapters = [],
           chapObj = {};
 
+        /*
+        * Sort each reading by article or chapter
+        */
         _.each(plannedReadings, function (reading) {
           if (reading.get("article")) {
             articles.push(reading.get("article"));
@@ -322,11 +318,23 @@ model.factory("Model", function () {
           }
         });
 
+
+        /*
+        *  Sort missing articles by present plannedreadings
+        */
         var notPlannedArticles = _.reject(missingArticles, function (missingArticle) {
           return arrObj[missingArticle.id];
         });
         var notPlannedChapters = _.reject(missingChapters, function (missingChapter) {
           return chapObj[missingChapter.id];
+        });
+
+        promise.resolve({
+          result:false,
+          plannedArticles: articles,
+          plannedChaptesr: chapters,
+          notPlannedArticles: notPlannedArticles,
+          notPlannedChapters: notPlannedChapters
         });
 
 

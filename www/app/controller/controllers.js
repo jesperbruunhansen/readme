@@ -8,12 +8,13 @@ angular.module('starter.controllers', [])
       Parse.User.logIn($scope.data.username, $scope.data.password, {
         success: function (user) {
           // Do stuff after successful login.
-          $state.go('tab.dash');
+          $state.go('tab.study');
           console.log(user);
           //alert("success!");
         },
         error: function (user, error) {
           // The login failed. Check error to see why.
+          console.log(error);
           alert("error!");
         }
       });
@@ -29,7 +30,10 @@ angular.module('starter.controllers', [])
   })
 
   .controller('StudyDetailCtrl', function ($scope, $stateParams, Courses) {
+
     $scope.course = Courses.get($stateParams.courseId);
+    $scope.courses = Courses.all();
+
   })
 
   .controller('StatsCtrl', function ($scope) {

@@ -1,10 +1,10 @@
-<ion-view view-title="Studyplan">
+<ion-view class="theme-dark" view-title="Studyplan">
 
   <ion-content class="padding">
 
     <!--DASHBOARD-->
     <div class="list card">
-      <div class="item item-divider">My Progress</div>
+      <div class="item item-divider positive">My Progress</div>
       <div class="item item-body">
         <div>
           You need to read <b>14 pages</b> a day to reach your goal!
@@ -14,7 +14,7 @@
 
     <!--COURSE LIST-->
     <ion-list>
-      <div class="item item-divider">Active Courses</div>
+      <div class="item item-divider positive">Active Courses</div>
       <ion-item class="item-remove-animate item-icon-right" ng-repeat="course in courses" type="item-text-wrap" href="#/tab/study/{{course.id}}">
         <h2>{{course.name}}</h2>
         <p>Next lecture: {{course.nextLecture}}</p>
@@ -27,4 +27,5 @@
     </ion-list>
 
   </ion-content>
+
 </ion-view>

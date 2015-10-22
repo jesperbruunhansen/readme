@@ -20,7 +20,21 @@ angular.module('starter.services', [])
     }, {
       id: 3,
       name: 'Google, Ebay, Amazon - Management Challenges in Networked Business (LA)',
-      nextLecture: '21. October - 9.40'
+      nextLecture: '21. October - 9.40',
+      lectures: [
+        {
+          start: '28-09 12:35',
+          end: '28-09 14:15'
+        },
+        {
+          start: '28-09 14:25',
+          end: '28-09 16:05'
+        },
+        {
+          start: '02-10 11:40',
+          end: '02-10 13:20'
+        }
+      ]
     }];
 
     return {

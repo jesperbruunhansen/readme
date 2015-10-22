@@ -1,1 +1,33 @@
-/* Empty. Add your own CSS if you like */
+.theme-dark {
+  /*background-image: url("../img/readme-logo-background.png");*/
+  background-color: #2a2a2a;
+}
+
+.fixed-outside{
+  position: absolute;
+  bottom: 0;
+  color:white;
+  width: 100%;
+  height:  120px;
+  text-align:center;
+}
+
+.forecast-button {
+  -webkit-align-content: stretch;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  -webkit-box-pack: center;
+  -webkit-flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  -webkit-justify-content: center;
+  align-content: stretch;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+}

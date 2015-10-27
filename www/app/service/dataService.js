@@ -31,7 +31,7 @@ var service = angular.module("starter.dataService", [])
         }, function (err) {
           promise.reject(err);
           console.log(err);
-        })
+        }); //added a comment
 
         return promise;
 

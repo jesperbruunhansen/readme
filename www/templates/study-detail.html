@@ -1,0 +1,43 @@
+<ion-view class="theme-dark" view-title="{{course.name}}">
+
+  <ion-content>
+
+    <!--LECTURE LIST-->
+    <ion-list>
+      <div class="item item-divider">Lectures
+        <progress max="100" value="50"></progress>
+      </div>
+
+      <!--<ion-item ng-repeat="lecture in courses.lectures" type="item-text-wrap">
+        <h2>{{lecture.start}}</h2>
+        <p>{{lecture.end}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>-->
+
+      <ion-item class="item-icon-right" type="item-text-wrap">
+        <div class="row row-no-padding padding-bottom">
+          <div class="col col-50"><h2>Start: 28-09 12:35</h2></div>
+          <div class="col col-50"><h2>End: 14:15</h2></div>
+        </div>
+        <ul class="list row-no-padding">
+          <li>
+            <p><u>Readings:</u></p>
+          </li>
+          <li class="padding-bottom">
+            <p>Accounting for Decision Making and Control 8th. Ed.</p>
+            <p>Chapter 2</p>
+          </li>
+          <li>
+            <p>Accounting for Decision Making and Control 8th. Ed.</p>
+            <p>Chapter 2</p>
+          </li>
+          <progress max="100" value="80"></progress>
+        </ul>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+
+    </ion-list>
+
+  </ion-content>
+
+</ion-view>

@@ -1,17 +1,28 @@
-<ion-view title="Sign In">
-  <ion-content padding="true" class="has-header">
-    <form>
+<!--<ion-view class="theme-dark" title="Readme">
+  <ion-content padding="true" class="has-header">-->
+<ion-view class="theme-dark" hide-nav-bar="true">
+  <ion-content padding="true" style="top: 10%">
+
+    <div class="text-center padding">
+      <img src="img/readme-logo.png" width="80%">
+    </div>
+
+    <div>
+    <form class="padding">
       <ion-list>
         <label class="item item-input">
-          <span class="input-label">Username</span>
-          <input type="text" placeholder="enter your username" ng-model="data.username">
+          <!--<span class="input-label">Username</span>-->
+          <input class="text-center" type="text" placeholder="Username" ng-model="data.username">
         </label>
         <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="password" placeholder="enter your password" ng-model="data.password">
+          <!--<span class="input-label">Password</span>-->
+          <input class="text-center" type="password" placeholder="Password" ng-model="data.password">
         </label>
       </ion-list>
-      <button class="button button-stable button-block" ng-click="loginEmail()">Login now</button>
+      <button class="button button-positive button-block" ng-click="loginEmail()">Login now</button>
+      <!--<button class="button button-dark button-block" ng-click="">Register now</button>-->
     </form>
+    </div>
   </ion-content>
+
 </ion-view>

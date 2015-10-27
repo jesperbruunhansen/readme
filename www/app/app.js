@@ -21,7 +21,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', "
 
   })
 
-  .config(function ($stateProvider, $urlRouterProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+
+    // Set tabs at the bottom for all OS
+    $ionicConfigProvider.tabs.position('bottom');
 
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
@@ -43,31 +46,31 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', "
       })
 
       // Each tab has its own nav history stack:
-      .state('tab.dash', {
-        url: '/dash',
+      .state('tab.study', {
+        url: '/study',
         views: {
-          'tab-dash': {
-            templateUrl: 'templates/tab-dash.html',
-            controller: 'DashCtrl'
+          'tab-study': {
+            templateUrl: 'templates/tab-study.html',
+            controller: 'StudyCtrl'
+          }
+        }
+      })
+      .state('tab.study-detail', {
+        url: '/study/:courseId',
+        views: {
+          'tab-study': {
+            templateUrl: 'templates/study-detail.html',
+            controller: 'StudyDetailCtrl'
           }
         }
       })
 
-      .state('tab.chats', {
-        url: '/chats',
+      .state('tab.stats', {
+        url: '/stats',
         views: {
-          'tab-chats': {
-            templateUrl: 'templates/tab-chats.html',
-            controller: 'ChatsCtrl'
-          }
-        }
-      })
-      .state('tab.chat-detail', {
-        url: '/chats/:chatId',
-        views: {
-          'tab-chats': {
-            templateUrl: 'templates/chat-detail.html',
-            controller: 'ChatDetailCtrl'
+          'tab-stats': {
+            templateUrl: 'templates/tab-stats.html',
+            controller: 'StatsCtrl'
           }
         }
       })
@@ -77,7 +80,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', "
         views: {
           'tab-forecast': {
             templateUrl: 'templates/tab-forecast.html',
-            controller: ''
+            controller: 'ForecastCtrl'
           }
         }
       })
@@ -87,7 +90,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', "
         views: {
           'tab-calendar': {
             templateUrl: 'templates/tab-calendar.html',
-            controller: ''
+            controller: 'CalendarCtrl'
           }
         }
       })
@@ -103,7 +106,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', "
       });
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/tab/dash');
+    $urlRouterProvider.otherwise('/tab/study');
     //$urlRouterProvider.otherwise('/login');
 
   });

@@ -2,7 +2,7 @@
 
   <!--<img ng-src="/img/readme-logo-small-fade.png" height="100%">-->
 
-  <ion-content>
+  <ion-content ng-hide="isForecasting">
     <div class="list card">
       <div class="item item-body">
         <div class="text-center">
@@ -18,12 +18,53 @@
     </div>
   </ion-content>
 
-  <ion-content class="forecast-button">
+
+  <ion-content class="forecast-button" >
       <div>
-        <button class="button button-large button-positive">
+        <button class="button button-large button-positive" ng-click="forecast()" ng-hide="isForecasting">
           Forecast now!
         </button>
+        <img ng-src="../img/ajax-loader.gif" height="45" ng-show="isLoading">
       </div>
+  </ion-content>
+
+  <ion-content ng-show="isForecasting">
+    <div class="list">
+
+      <div ng-repeat="Course in forecast.Courses track by $index">
+
+        <div ng-if="Course.Lectures.length" class="item item-divider">
+          {{Course.name}}
+        </div>
+
+        <div ng-repeat="Lecture in Course.Lectures | orderBy:'_start'">
+
+          <div class="item item-icon-left item-icon-right" href="#" ng-repeat="Syllabus in Lecture.Syllabus">
+
+            <i ng-if="Syllabus.isRead" class="icon ion-checkmark-circled" style="color:#11A711"></i>
+            <i ng-if="!Syllabus.isRead" class="icon ion-close-circled" style="color:#C53030"></i>
+
+            <h2>{{Syllabus.title}}</h2>
+            <p>Due: {{Lecture.start}}</p>
+            <p>Page: {{Syllabus.startPage}} to {{Syllabus.endPage}}</p>
+
+            <i
+              ng-if="!Syllabus.hasBeenPlanned && !Syllabus.isRead"
+              class="icon ion-android-calendar"
+              style="color:#226BE0"
+              ng-click="schedule(Syllabus)">
+            </i>
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+
+
+    </div>
   </ion-content>
 
 </ion-view>

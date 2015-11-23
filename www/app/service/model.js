@@ -12,6 +12,7 @@ model.factory("Model", function () {
 
   return {
     user: user,
+    lectures: [],
     getCourses: function () {
       var that = this;
 
@@ -85,6 +86,7 @@ model.factory("Model", function () {
       query.lessThan('end', finish.toDate());
       query.containedIn("course", courses);
       query.find().then(function (lectures) {
+        that.lectures = lectures;
         promise.resolve({
           getLectureContent: function () {
             return that.getLectureContent(lectures);
@@ -116,6 +118,7 @@ model.factory("Model", function () {
           .relation("articles")
           .query()
           .include("article")
+          .include("lecture")
           .each(function (article) {
             articleList.push(article.get("article"));
           });
@@ -124,15 +127,21 @@ model.factory("Model", function () {
           .relation("chapters")
           .query()
           .include("chapter")
+          .include("lecture")
           .each(function (chapter) {
             chapterList.push(chapter.get("chapter"));
           });
       });
 
+
+
       /*
        *  Resolve, when all promises are resolved
        */
       Parse.Promise.when(articlePromise, chapterPromise).then(function () {
+
+        console.log(articleList, chapterList);
+
         promise.resolve({
           hasArticlesBeenRead: function () {
             return that.hasArticleBeenRead(articleList);
@@ -280,7 +289,7 @@ model.factory("Model", function () {
        */
       if (missingArticles.length == 0 && missingChapters.length == 0) {
         promise.resolve({
-          result: true
+          allPlanned: true
         });
         return promise;
       }
@@ -318,7 +327,6 @@ model.factory("Model", function () {
           }
         });
 
-
         /*
         *  Sort missing articles by present plannedreadings
         */
@@ -329,10 +337,13 @@ model.factory("Model", function () {
           return chapObj[missingChapter.id];
         });
 
+        /*
+        *  Resolve
+        */
         promise.resolve({
-          result:false,
+          allPlanned:false,
           plannedArticles: articles,
-          plannedChaptesr: chapters,
+          plannedChapters: chapters,
           notPlannedArticles: notPlannedArticles,
           notPlannedChapters: notPlannedChapters
         });
@@ -345,6 +356,10 @@ model.factory("Model", function () {
 
       return promise;
 
+    },
+    prioritizeReadings: function (articles, chapters) {
+      console.log(articles, chapters);
+      console.log(this.lectures);
     }
 
 

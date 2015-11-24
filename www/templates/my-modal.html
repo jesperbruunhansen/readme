@@ -1,11 +1,35 @@
 <ion-modal-view>
-  <ion-header-bar>
-    <h1 class="title">{{modal.syllabus | json}}</h1>
-    <p>
 
-    </p>
+  <ion-header-bar class="bar bar-header bar-positive">
+    <div class="h1 title">Plan my studytime</div>
+    <button class="button button-icon icon ion-ios-close-empty" ng-click="closeModal()"></button>
   </ion-header-bar>
   <ion-content>
-    Hello!
+
+    <div class="list">
+      <label class="item item-floating-label">
+        <h2>Lecture:</h2>
+        <p>{{modal.Course.name}}</p>
+      </label>
+      <label class="item item-floating-label">
+        <h2>Lecture starts at:</h2>
+        <p>{{modal.Lecture.start}}</p>
+      </label>
+      <label class="item item-floating-label">
+        <h2>{{modal.Syllabus.type.capitalizeFirstLetter()}} title:</h2>
+        <p>{{modal.Syllabus.title}}</p>
+      </label>
+      <label class="item item-floating-label">
+        <h2>Length:</h2>
+        <p>{{modal.Syllabus.pageCount}} pages (p. {{modal.Syllabus.startPage}} - {{modal.Syllabus.endPage}})</p>
+      </label>
+
+      <label class="item">
+        <button class="button button-block button-balanced" ng-click="checkSchedule()">Check my schedule</button>
+      </label>
+
+    </div>
+
   </ion-content>
+
 </ion-modal-view>

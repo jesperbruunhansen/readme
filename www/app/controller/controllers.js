@@ -40,32 +40,41 @@ angular.module('starter.controllers', ["starter.data"])
 
   })
 
-  .controller('ForecastCtrl', function ($scope, Data, $ionicModal) {
+  .controller('ForecastCtrl', function ($scope, Data, $ionicModal, $ionicLoading) {
 
     $scope.isForecasting = false;
     $scope.isLoading = false;
 
+    /**
+     * IONIC MODAL
+     */
     $ionicModal.fromTemplateUrl('/templates/my-modal.html', {
       scope: $scope,
       animation: 'slide-in-up'
-    }).then(function(modal) {
+    }).then(function (modal) {
       $scope.modal = modal;
     });
-    $scope.schedule = function(Syllabus) {
-
-      console.log(Syllabus);
-
+    $scope.schedule = function (Course, Lecture, Syllabus) {
+      $scope.modal.Syllabus = angular.extend({}, Syllabus);
+      $scope.modal.Lecture = angular.extend({}, Lecture);
+      $scope.modal.Course = angular.extend({}, Course);
       $scope.modal.show();
-      $scope.modal.syllabus = Syllabus;
     };
-    $scope.closeModal = function() {
+    $scope.closeModal = function () {
       $scope.modal.hide();
     };
 
+    /**
+     * FORECASTING
+     */
     $scope.forecast = function () {
 
       $scope.isForecasting = true;
-      $scope.isLoading = true;
+
+      //Loading
+      $ionicLoading.show({
+        template: '<ion-spinner icon="ios" class="spinner-light"></ion-spinner><p>Checking your upcoming lectures<br>Hang in tight!</p>'
+      });
 
       Data.Forecast.loadAllCourses().then(function (forecast) {
 
@@ -94,7 +103,7 @@ angular.module('starter.controllers', ["starter.data"])
       }).then(function (forecast) {
 
         $scope.$apply(function () {
-          $scope.isLoading = false;
+          $ionicLoading.hide();
           $scope.forecast = forecast;
         });
 
@@ -105,57 +114,6 @@ angular.module('starter.controllers', ["starter.data"])
       });
     };
 
-
-
-    /*Data.Course.getAll().then(function (courses) {
-
-      console.log(courses);
-
-      return Data.Lecture.getAllFrom(courses);
-
-    }, function (err) {
-      console.log(err);
-    }).then(function (lectures) {
-
-      return Data.Lecture.getAllSyllabuses(lectures)
-
-    }).then(function (lectures) {
-
-      return Data.Lecture.hasAllSyllabusesBeenRead(lectures)
-        .then(function () {
-          return Data.Syllabus.prioritize(lectures);
-        });
-
-    }, function (err) {
-      console.log(err);
-    }).then(function (prioritizedSyllabus) {
-
-      return Data.Syllabus.hasAllBeenPlanned(prioritizedSyllabus);
-
-    }, function (err) {
-      console.log(err);
-    }).then(function (syllabusList) {
-
-      console.log(syllabusList);
-      $scope.$apply(function () {
-        $scope.syllabusList = syllabusList;
-      });
-
-
-    }, function (err) {
-      console.log(err);
-    });*/
-
-    /*$scope.isForecasting = false;
-    $scope.forecast = function () {
-
-      $scope.isForecasting = true;
-      console.log("Hllo");
-
-
-
-    };
-*/
 
   })
 

@@ -8,9 +8,13 @@ data.factory("Data", function () {
   var user = Parse.User.current();
 
   function Forecast(){
+
   }
 
-
+  /**
+   * LOAD ALL COURSES
+   * @returns {b.Promise}
+   */
   Forecast.loadAllCourses = function () {
 
     var promise = new Parse.Promise();
@@ -37,12 +41,18 @@ data.factory("Data", function () {
   function Course() {
 
   }
-  Course.loadLectures = function (forecast) {
+
+  /**
+   *
+   * @param forecast
+   * @returns {b.Promise}
+     */
+  Course.loadLectures = function (forecast, days) {
 
     /*
      *  Define timespan
      */
-    var timeSpan = 7;
+    var timeSpan = days || 7;
     var d = new Date("2015/09/24"); //Testing purpose
     var start = new moment(d);
     start.startOf('day');
@@ -103,6 +113,11 @@ data.factory("Data", function () {
     this.chapters = parseObj.relation("chapters");
   };
 
+  /**
+   *
+   * @param forecast
+   * @returns {b.Promise}
+     */
   Lecture.loadSyllabuses = function (forecast) {
 
     var promise = new Parse.Promise();
@@ -123,68 +138,6 @@ data.factory("Data", function () {
 
     }, function (err) {
       console.log(err);
-      promise.reject(err);
-    });
-
-    return promise;
-
-  };
-
-  Lecture.getAllSyllabuses = function (lectures) {
-
-    var promise = new Parse.Promise();
-    var allSyllabuses = [];
-    lectures.forEach(function (lecture) {
-      var s = lecture.getSyllabus();
-      allSyllabuses.push(s);
-    });
-
-    Parse.Promise.when(allSyllabuses).then(function () {
-      var result = [];
-      for (var i = 0; i < arguments.length; i++) {
-        result = result.concat(arguments[i]);
-      }
-      promise.resolve(lectures);
-    }, function (err) {
-      promise.reject(err);
-    });
-
-    return promise;
-  };
-
-  Lecture.getAllFrom = function (courses) {
-
-    var courseList = [];
-    courses.forEach(function (course) {
-      courseList.push(course.course);
-    });
-
-    /*
-     *  Define timespan
-     */
-    var timeSpan = 7;
-    var d = new Date("2015/09/24"); //Testing purpose
-    var start = new moment(d);
-    start.startOf('day');
-    var finish = new moment(start);
-    finish.add('days', timeSpan);
-
-    /*
-     *  Do query
-     */
-    var promise = new Parse.Promise();
-    var query = new Parse.Query("Lecture");
-    var lectureList = [];
-    query.greaterThanOrEqualTo('start', start.toDate());
-    query.lessThan('end', finish.toDate());
-    query.containedIn("course", courseList);
-    query.each(function (lecture) {
-      var l = new Lecture();
-      l.setFromParse(lecture);
-      lectureList.push(l);
-    }).then(function () {
-      promise.resolve(lectureList);
-    }, function (err) {
       promise.reject(err);
     });
 
@@ -218,29 +171,6 @@ data.factory("Data", function () {
 
   };
 
-  Lecture.prototype.isSyllabusRead = function () {
-
-    var promise = new Parse.Promise();
-    var syllabusList = [];
-    var self = this;
-
-    this.Syllabus.forEach(function (syllabus) {
-      var s = syllabus.isRead();
-      syllabusList.push(s);
-    });
-
-    Parse.Promise.when(syllabusList).then(function () {
-
-      promise.resolve();
-
-    }, function (err) {
-      console.log(err);
-      promise.reject(err);
-    });
-
-    return promise;
-
-  };
 
   Lecture.prototype.getSyllabus = function () {
 
@@ -285,36 +215,6 @@ data.factory("Data", function () {
 
   }
 
-  Syllabus.prioritize = function (lectures) {
-    var promise = new Parse.Promise();
-    var syllabusList = [];
-
-    lectures.forEach(function (lecture) {
-      lecture.Syllabus.forEach(function (syllabus) {
-
-        if (!syllabus.isRead) {
-
-          var s = new Syllabus();
-          s.type = syllabus.type;
-          s.id = syllabus.id;
-          s.title = syllabus.title;
-          s.lecture = {
-            start: lecture.start,
-            end: lecture.end
-          };
-
-          syllabusList.push(s);
-        }
-
-      });
-    });
-
-    var foo = syllabusList.sort(function (a, b) {
-      return a.lecture.start.getTime() - b.lecture.start.getTime();
-    });
-    promise.resolve(foo);
-    return promise;
-  };
 
   Syllabus.hasAllBeenPlanned = function (forecast) {
 
@@ -348,6 +248,7 @@ data.factory("Data", function () {
     this.title = parseObj.get("title");
     this.id = parseObj.id;
     this.chapterNr = parseObj.get("chapter");
+    this.pageCount = parseInt(this.endPage, 10) - parseInt(this.startPage, 10);
   };
 
 

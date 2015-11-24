@@ -3,6 +3,11 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', "starter.model"])
 
   .run(function ($ionicPlatform) {
+
+    String.prototype.capitalizeFirstLetter = function() {
+      return this.charAt(0).toUpperCase() + this.slice(1);
+    };
+
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)

@@ -42,6 +42,48 @@ data.factory("Data", function () {
 
   }
 
+  Course.get = function (courseId) {
+
+    var promise = new Parse.Promise();
+    var query = new Parse.Query("Course");
+    query.get(courseId).then(function (course) {
+
+      var c = new Course();
+      c.id = course.id;
+      c.courseId = course.get("courseId");
+      c.name = course.get("name");
+
+      promise.resolve(c);
+    }, function (err) {
+      promise.reject(err);
+    });
+
+    return promise;
+
+  };
+  Course.prototype.loadLectures = function () {
+
+    var course = Parse.Object.extend("Course").createWithoutData(this.id);
+    var promise = new Parse.Promise();
+    var self = this;
+    self.lectures = [];
+
+    var query = new Parse.Query("Lecture");
+    query.equalTo("course", course);
+    query.each(function (lecture) {
+      var l = new Lecture();
+      l.setFromParse(lecture);
+      self.lectures.push(l);
+    }).then(function () {
+      promise.resolve();
+    }, function (err) {
+      promise.reject(err);
+    });
+
+    return promise;
+
+  };
+
   /**
    *
    * @param forecast

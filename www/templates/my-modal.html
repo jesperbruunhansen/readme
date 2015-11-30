@@ -23,9 +23,22 @@
         <h2>Length:</h2>
         <p>{{modal.Syllabus.pageCount}} pages (p. {{modal.Syllabus.startPage}} - {{modal.Syllabus.endPage}})</p>
       </label>
+      <label class="item item-floating-label item-icon-right"">
+        <h2>Has been read:</h2>
+        <i ng-if="modal.Syllabus.isRead" class="icon ion-checkmark-circled" style="color:#11A711"></i>
+        <i ng-if="!modal.Syllabus.isRead" class="icon ion-close-circled" style="color:#C53030"></i>
+      </label>
+      <label class="item item-floating-label item-icon-right" ng-if="!modal.Syllabus.isRead">
+        <h2>Has been planned:</h2>
+        <i ng-if="modal.Syllabus.hasBeenPlanned" class="icon ion-checkmark-circled" style="color:#11A711"></i>
+        <i ng-if="!modal.Syllabus.hasBeenPlanned" class="icon ion-close-circled" style="color:#C53030"></i>
+      </label>
 
-      <label class="item">
-        <button class="button button-block button-balanced" ng-click="checkSchedule()">Check my schedule</button>
+      <label class="item" ng-if="!modal.Syllabus.hasBeenPlanned && !modal.Syllabus.isRead">
+        <button
+          class="button button-block button-balanced">
+          Plan this {{modal.Syllabus.type.capitalizeFirstLetter()}}
+        </button>
       </label>
 
     </div>

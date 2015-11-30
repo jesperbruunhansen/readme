@@ -1,4 +1,4 @@
-<ion-view class="theme-dark" view-title="{{course.name}}">
+<ion-view class="theme-dark" view-title="{{title}}">
 
   <ion-content>
 
@@ -8,13 +8,17 @@
         <progress max="100" value="50"></progress>
       </div>
 
+      <ion-item ng-repeat="lecture in course.lectures">
+        <h2>{{lecture.id}}</h2>
+      </ion-item>
+
       <!--<ion-item ng-repeat="lecture in courses.lectures" type="item-text-wrap">
         <h2>{{lecture.start}}</h2>
         <p>{{lecture.end}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>-->
 
-      <ion-item class="item-icon-right" type="item-text-wrap">
+     <!-- <ion-item class="item-icon-right" type="item-text-wrap">
         <div class="row row-no-padding padding-bottom">
           <div class="col col-50"><h2>Start: 28-09 12:35</h2></div>
           <div class="col col-50"><h2>End: 14:15</h2></div>
@@ -34,7 +38,7 @@
           <progress max="100" value="80"></progress>
         </ul>
         <i class="icon ion-chevron-right icon-accessory"></i>
-      </ion-item>
+      </ion-item>-->
 
     </ion-list>
 

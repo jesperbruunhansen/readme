@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ["starter.data"])
+angular.module('starter.controllers', ["starter.data", "starter.googleCalendar"])
 
   .controller('LoginCtrl', function ($scope, $state) {
 
@@ -21,18 +21,41 @@ angular.module('starter.controllers', ["starter.data"])
     };
   })
 
-  .controller('StudyCtrl', function ($scope, Courses) {
+  .controller('StudyCtrl', function ($scope, Data) {
 
-    $scope.courses = Courses.all();
-    $scope.remove = function (course) {
-      Courses.remove(course);
-    };
+    Data.Forecast.loadAllCourses().then(function (forecast) {
+
+      console.log(forecast);
+
+      $scope.$apply(function () {
+        $scope.courses = forecast.Courses;
+      });
+
+    });
+
   })
 
-  .controller('StudyDetailCtrl', function ($scope, $stateParams, Courses) {
+  .controller('StudyDetailCtrl', function ($scope, $stateParams, Data) {
 
-    $scope.course = Courses.get($stateParams.courseId);
-    $scope.courses = Courses.all();
+    Data.Course.get($stateParams.courseId)
+      .then(function (course) {
+
+        course.loadLectures().then(function () {
+          $scope.$apply(function () {
+
+            $scope.course = course;
+            $scope.title = course.name;
+            console.log($scope.course);
+
+          });
+        });
+
+
+      }, function (err) {
+        console.log(err);
+      });
+
+
 
   })
 
@@ -40,7 +63,8 @@ angular.module('starter.controllers', ["starter.data"])
 
   })
 
-  .controller('ForecastCtrl', function ($scope, Data, $ionicModal, $ionicLoading) {
+  .controller('ForecastCtrl', function ($scope, Data, $ionicModal, $ionicLoading, GoogleCalendar) {
+
 
     $scope.isForecasting = false;
     $scope.isLoading = false;
@@ -48,7 +72,7 @@ angular.module('starter.controllers', ["starter.data"])
     /**
      * IONIC MODAL
      */
-    $ionicModal.fromTemplateUrl('/templates/my-modal.html', {
+    $ionicModal.fromTemplateUrl('templates/my-modal.html', {
       scope: $scope,
       animation: 'slide-in-up'
     }).then(function (modal) {
@@ -64,6 +88,10 @@ angular.module('starter.controllers', ["starter.data"])
       $scope.modal.hide();
     };
 
+    $scope.checkSchedule = function (event) {
+
+    };
+
     /**
      * FORECASTING
      */
@@ -71,14 +99,16 @@ angular.module('starter.controllers', ["starter.data"])
 
       $scope.isForecasting = true;
 
+
       //Loading
       $ionicLoading.show({
         template: '<ion-spinner icon="ios" class="spinner-light"></ion-spinner><p>Checking your upcoming lectures<br>Hang in tight!</p>'
       });
 
+
       Data.Forecast.loadAllCourses().then(function (forecast) {
 
-        return Data.Course.loadLectures(forecast);
+        return Data.Course.loadLectures(forecast, 7);
 
       }, function (err) {
         console.log(err);
@@ -112,11 +142,11 @@ angular.module('starter.controllers', ["starter.data"])
       }, function (err) {
         console.log(err);
       });
-    };
+
+    }
 
 
   })
-
   .controller('CalendarCtrl', function ($scope) {
 
   })

@@ -29,6 +29,12 @@
   </ion-content>
 
   <ion-content ng-show="isForecasting">
+
+    <ion-refresher
+      pulling-text="Pull to close Forecast"
+      on-refresh="closeForecast()">
+    </ion-refresher>
+
     <div class="list">
 
       <div ng-repeat="Course in forecast.Courses track by $index">
@@ -39,7 +45,7 @@
 
         <div ng-repeat="Lecture in Course.Lectures | orderBy:'_start'">
 
-          <div class="item item-icon-left item-icon-right" href="#" ng-repeat="Syllabus in Lecture.Syllabus">
+          <div ng-click="schedule(Course, Lecture, Syllabus)" class="item item-icon-left item-icon-right" href="#" ng-repeat="Syllabus in Lecture.Syllabus">
 
             <i ng-if="Syllabus.isRead" class="icon ion-checkmark-circled" style="color:#11A711"></i>
             <i ng-if="!Syllabus.isRead" class="icon ion-close-circled" style="color:#C53030"></i>
@@ -51,8 +57,12 @@
             <i
               ng-if="!Syllabus.hasBeenPlanned && !Syllabus.isRead"
               class="icon ion-android-calendar"
-              style="color:#226BE0"
-              ng-click="schedule(Course, Lecture, Syllabus)">
+              style="color:#C53030">
+            </i>
+            <i
+              ng-if="Syllabus.hasBeenPlanned"
+              class="icon ion-android-calendar"
+              style="color:#11A711">
             </i>
           </div>
 

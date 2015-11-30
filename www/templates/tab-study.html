@@ -17,12 +17,8 @@
       <div class="item item-divider positive">Active Courses</div>
       <ion-item class="item-remove-animate item-icon-right" ng-repeat="course in courses" type="item-text-wrap" href="#/tab/study/{{course.id}}">
         <h2>{{course.name}}</h2>
-        <p>Next lecture: {{course.nextLecture}}</p>
+        <p>{{course.courseId}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
-
-        <ion-option-button class="button-assertive" ng-click="remove(course)">
-          Delete
-        </ion-option-button>
       </ion-item>
     </ion-list>
 
